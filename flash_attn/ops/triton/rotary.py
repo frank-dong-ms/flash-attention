@@ -174,6 +174,13 @@ def apply_rotary(
         batch = batch_p_1 - 1
         seqlen = max_seqlen
     seqlen_ro, rotary_dim = cos.shape
+    if torch.is_tensor(seqlen_ro):
+        seqlen_ro = seqlen_ro.item()
+        rotary_dim = rotary_dim.item()
+        batch = batch.item()
+        seqlen = seqlen.item()
+        nheads = nheads.item()
+        headdim = headdim.item()
     assert sin.shape == cos.shape
     rotary_dim *= 2
     assert rotary_dim <= headdim, "rotary_dim must be <= headdim"
